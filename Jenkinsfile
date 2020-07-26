@@ -8,11 +8,12 @@ node{
   }
 
   stage ('Push Docker image to DockerHub') {
-    withCredentials([string(credentialsId: 'dockerhubaccount', variable: 'dockerhubaccount')]) 
-    {
+    #withCredentials([usernamePassword(credentialsId: 'amazon', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+    #withCredentials([string(credentialsId: 'dockerhubaccount', variable: 'dockerhubaccount')]) 
+    #{
      // sh "docker login -u suhvas -p ${dockerhubaccount}"
       sh "docker login -u suhvas -p Vastre@123"
-    }
+    #}
     sh 'docker push suhvas/suhas-pridevops:0.1.0'
   }
 }
