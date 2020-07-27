@@ -19,7 +19,7 @@ node{
   }
   
   stage ('Deploy to Dev') {
-		def dockerRun = 'docker run -p 5000:8080 -t suhvas/suhas-pridevops:0.1.0'
+		def dockerRun = 'docker run -p 5000:8080 -t -d suhvas/suhas-pridevops:0.1.0'
 		/*sshagent(['deploy-to-dev-docker']) {
 			sh "ssh -o StrictHostKeyChecking=no suhvas@100.26.227.218 ${dockerRun}"
 		}*/
