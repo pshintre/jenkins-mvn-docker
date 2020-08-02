@@ -12,7 +12,6 @@ node{
     withCredentials([string(credentialsId: 'dockerhubaccount', variable: 'dockerhubaccount')]) 
     {
      sh "docker login -u suhvas -p ${dockerhubaccount}"
-      //sh "docker login -u suhvas -p Vastre@123"
     }
     sh 'docker push suhvas/suhas-pridevops:0.1.0'
     sh 'docker rmi suhvas/suhas-pridevops:0.1.0'
@@ -27,7 +26,7 @@ node{
 	}
   
   stage ('Test') {
-    sh "curl http//localhost:5000"
+    sh "curl http://localhost:5000"
    // sh "curl htpp://100.24.244.5:5000"
   }
 }
