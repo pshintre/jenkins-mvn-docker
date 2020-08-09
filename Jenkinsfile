@@ -1,32 +1,55 @@
+
 node{
-  stage ('scm checkout') {
-      git ('https://github.com/suhvas/jenkins-mvn-docker.git')
+  def Namespace = "pkapp"
+  def ImageName = "suhvas/suhas-pridevops"
+  def Creds	= "dockerhubaccount"
+  def imageTag = "1.0"
+  try{
+  stage('Checkout'){
+      git 'https://github.com/suhvas/jenkins-mvn-docker.git'
+      //git 'https://github.com/maheshkharwadkar/mk-k8-ci-cd.git'
+      //sh "git rev-parse --short HEAD > .git/commit-id"
+      //imageTag= readFile('.git/commit-id').trim()
+
+
+
   }
 
-  stage ('docker image build') {
-     sh 'mvn clean install dockerfile:build '
-  }
 
-  stage ('Push Docker image to DockerHub') {
+  stage('RUN Unit Tests'){
+      //sh "npm install"
+      //sh "npm test"
+  }
+  //stage('Docker Build, Push'){
+  //  withDockerRegistry([credentialsId: "${Creds}", url: 'https://index.docker.io/v1/']) {
+  //    sh "docker build -t ${ImageName}:${imageTag} ."
+  //    sh "docker push ${ImageName}"
+  //      }
+   // }
+    stage ('Push Docker image to DockerHub') {
    // withCredentials([usernamePassword(credentialsId: 'amazon', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-    withCredentials([string(credentialsId: 'dockerhubaccount', variable: 'dockerhubaccount')]) 
+    withCredentials([string(credentialsId: "${Creds}", variable: "${Creds}")]) 
     {
      sh "docker login -u suhvas -p ${dockerhubaccount}"
     }
-    sh 'docker push suhvas/suhas-pridevops:0.1.0'
-    sh 'docker rmi suhvas/suhas-pridevops:0.1.0'
+    //sh 'docker push suhvas/suhas-pridevops:0.1.0'
+    sh "docker build ${ImageName}:${imageTag}"
+    //sh 'docker rmi suhvas/suhas-pridevops:0.1.0'
+    //sh "docker rmi -t ${ImageName}:${imageTag}"
   }
-  
-  stage ('Deploy to Dev') {
-		def dockerRun = 'docker run -p 5000:8080 -d suhvas/suhas-pridevops:0.1.0'
-		/*sshagent(['deploy-to-dev-docker']) {
-			sh "ssh -o StrictHostKeyChecking=no suhvas@100.26.227.218 ${dockerRun}"
-		}*/
-    sh "${dockerRun}"
+    //stage('Deploy on K8s'){
+	//script{
+       // sh "cd ansible/sayarapp-deploy"
+	//    sh "pwd"
+	//    sh (
+	//	    script: "cd ansible/sayarapp-deploy && ansible-playbook deploy.yml  --user=jenkins --extra-vars ImageName=${ImageName} --extra-vars imageTag=${imageTag} --extra-vars Namespace=${Namespace} -vv"
+        //)  
+	//  }
+	//}
 	}
-  
-  stage ('Test') {
-    sh "curl http://localhost:5000"
-   // sh "curl htpp://100.24.244.5:5000"
-  }
+     } catch (err) {
+        currentBuild.result = 'FAILURE'
+    }
+	
 }
+
