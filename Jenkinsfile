@@ -1,26 +1,25 @@
-
 node{
   def Namespace = "pkapp"
   def ImageName = "suhvas/suhas-pridevops"
   def Creds	= "dockerhubaccount"
   def imageTag = "1.0"
   try{
-	  stage('Checkout'){
-		  git 'https://github.com/suhvas/jenkins-mvn-docker.git'
-		  //git 'https://github.com/maheshkharwadkar/mk-k8-ci-cd.git'
-		  //sh "git rev-parse --short HEAD > .git/commit-id"
-		  //imageTag= readFile('.git/commit-id').trim()
-	  }
-	  //stage('RUN Unit Tests'){
-	//	  sh "npm install"
-	//	  sh "npm test"
-	 // }
-	  //stage('Docker Build, Push'){
-	  //  withDockerRegistry([credentialsId: "${Creds}", url: 'https://index.docker.io/v1/']) {
-	  //    sh "docker build -t ${ImageName}:${imageTag} ."
-	  //    sh "docker push ${ImageName}"
-	  //      }
-	   // }
+		stage('Checkout'){
+			  git 'https://github.com/suhvas/jenkins-mvn-docker.git'
+			  //git 'https://github.com/maheshkharwadkar/mk-k8-ci-cd.git'
+			  //sh "git rev-parse --short HEAD > .git/commit-id"
+			  //imageTag= readFile('.git/commit-id').trim()
+		}
+		  //stage('RUN Unit Tests'){
+		//	  sh "npm install"
+		//	  sh "npm test"
+		 // }
+		stage('Docker Build, Push'){
+			withDockerRegistry([credentialsId: "${Creds}", url: 'https://index.docker.io/v1/']) {
+			  sh "docker build -t ${ImageName}:${imageTag} ."
+			  sh "docker push ${ImageName}"
+			}
+		}
 		stage ('Push Docker image to DockerHub') {
 		   // withCredentials([usernamePassword(credentialsId: 'amazon', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 				withCredentials([string(credentialsId: "${Creds}", variable: "${Creds}")]) 
@@ -47,4 +46,3 @@ node{
     }
 	
 }
-
