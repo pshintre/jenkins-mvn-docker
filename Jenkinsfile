@@ -27,7 +27,7 @@ node{
 				{
 				 sh "docker login -u pshintre -p ${dockerhubaccount}"
 				}
-			         sh "docker push ${ImageName}:${image tag}
+			         sh "docker push ${ImageName}:${imageTag}
 				//sh 'docker push suhvas/suhas-pridevops:0.1.0'
 				//sh "docker build ${ImageName}:${imageTag}"
 				//sh 'docker rmi suhvas/suhas-pridevops:0.1.0'
