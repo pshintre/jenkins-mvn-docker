@@ -1,11 +1,11 @@
 node{
   def Namespace = "pkapp"
-  def ImageName = "suhvas/suhas-pridevops"
+  def ImageName = "pshintre/parag-pridevops"
   def Creds	= "dockerhubaccount"
   def imageTag = "1.0"
   try{
 		stage('Checkout'){
-			  git 'https://github.com/suhvas/jenkins-mvn-docker.git'
+			  git 'https://github.com/pshintre/jenkins-mvn-docker.git'
 			  //git 'https://github.com/maheshkharwadkar/mk-k8-ci-cd.git'
 			  //sh "git rev-parse --short HEAD > .git/commit-id"
 			  //imageTag= readFile('.git/commit-id').trim()
@@ -25,7 +25,7 @@ node{
 		   // withCredentials([usernamePassword(credentialsId: 'amazon', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 				withCredentials([string(credentialsId: "${Creds}", variable: "${Creds}")]) 
 				{
-				 sh "docker login -u suhvas -p ${dockerhubaccount}"
+				 sh "docker login -u pshintre -p ${dockerhubaccount}"
 				}
 			         sh "docker push ${ImageName}:${image tag}
 				//sh 'docker push suhvas/suhas-pridevops:0.1.0'
