@@ -16,8 +16,9 @@ node{
 		 // }
 		stage('Docker Build, Push'){
 			withDockerRegistry([credentialsId: "${Creds}", url: 'https://index.docker.io/v1/']) {
-			  sh "docker build -t ${ImageName}:${imageTag} ."
-			  sh "docker push ${ImageName}"
+			   mvn install dockerfile:build
+			  //sh "docker build -t ${ImageName}:${imageTag} ."
+			  //sh "docker push ${ImageName}"
 			}
 		}
 		stage ('Push Docker image to DockerHub') {
@@ -26,8 +27,9 @@ node{
 				{
 				 sh "docker login -u suhvas -p ${dockerhubaccount}"
 				}
+			         sh "docker push ${ImageName}:${image tag}
 				//sh 'docker push suhvas/suhas-pridevops:0.1.0'
-				sh "docker build ${ImageName}:${imageTag}"
+				//sh "docker build ${ImageName}:${imageTag}"
 				//sh 'docker rmi suhvas/suhas-pridevops:0.1.0'
 				//sh "docker rmi -t ${ImageName}:${imageTag}"
 		  //}
